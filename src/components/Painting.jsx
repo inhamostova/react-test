@@ -1,7 +1,8 @@
+import PropTypes from 'prop-types'
 import css from './Painting.module.css'
 
 
-export const Painting = ({ painting: { id, url, title, price, author, quantity } }) => {
+export const Painting = ({ painting: { url, title, price, author, quantity } }) => {
     return <div>
         <img src={url} alt={title} width={300}/>
         <h2 className={css.title}>{ title}</h2>
@@ -12,3 +13,17 @@ export const Painting = ({ painting: { id, url, title, price, author, quantity }
         </div>
     </div>
 }
+
+Painting.propTypes = {
+    painting: PropTypes.shape({
+            url: PropTypes.string.isRequired,
+            title: PropTypes.string.isRequired,
+            price: PropTypes.number.isRequired,
+            author: PropTypes.shape({
+                tag: PropTypes.string.isRequired,
+                url: PropTypes.string.isRequired,
+            }),
+            quantity: PropTypes.number.isRequired
+        })
+} 
+
