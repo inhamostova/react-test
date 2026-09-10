@@ -4,7 +4,7 @@ export const Todo = ({ todo: { id, task, checked }, onDelete, onCheck }) => {
   return (
     <div>
       <p>{task}</p>
-      <button onClick={() => onDelete(id)} type="button">
+      <button onClick={() => onDelete(id)} type="button" disabled={!checked}>
         Delete
       </button>
       <input

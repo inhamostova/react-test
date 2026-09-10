@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { TodoList } from './TodoList/TodoList';
 import { TodoForm } from './TodoForm/TodoForm';
+import { Modal } from './Modal/Modal';
 
 const initTodos = [
   {
@@ -23,7 +24,22 @@ const initTodos = [
 export class App extends Component {
   state = {
     todos: initTodos,
+    isModalShown: false,
   };
+
+  componentDidMount() {
+    const savedTodos = JSON.parse(localStorage.getItem('todos'));
+
+    if (savedTodos) {
+      this.setState({ todos: savedTodos });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (this.state.todos !== prevState.todos) {
+      localStorage.setItem('todos', JSON.stringify(this.state.todos));
+    }
+  }
 
   addTodo = task => {
     this.setState(prevState => {
@@ -54,14 +70,20 @@ export class App extends Component {
     }));
   };
 
+  toggleModal = () => {
+    this.setState(prevState => ({ isModalShown: !prevState.isModalShown }));
+  };
+
   render() {
-    const { todos } = this.state;
-    const { addTodo, deleteTodo, checkTodo } = this;
+    const { todos, isModalShown } = this.state;
+    const { addTodo, deleteTodo, checkTodo, toggleModal } = this;
 
     return (
       <>
+        <button onClick={toggleModal}>Open Modal</button>
         <TodoForm onSubmit={addTodo} />
         <TodoList todos={todos} onDelete={deleteTodo} onCheck={checkTodo} />
+        {isModalShown && <Modal onClose={toggleModal} />}
       </>
     );
   }
